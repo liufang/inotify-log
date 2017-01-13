@@ -20,12 +20,18 @@ var server_host = ""
 var accessFileName = "/var/log/apache2/access_log"
 
 func main() {
-	p := flag.String("p", "fang", "author password")
+	p := flag.String("p", "fang", "认证密码")
 	bmd5 := md5.Sum([]byte(*p))
 	auth_password = hex.EncodeToString(bmd5[:])
 	//init access file
-	accessFileName = *flag.String("f", "/var/log/apache2/access_log", "sync file path")
-	server_host = *flag.String("s", "localhost", "server host")
+	accessFileName = *flag.String("f", "/var/log/apache2/access_log", "需要监控同步的文件")
+	server_host = *flag.String("s", "localhost", "服务器域名")
+	flag.Parse();
+	//print help
+	if flag.Arg(0) == "help" {
+		flag.PrintDefaults()
+		os.Exit(0)
+	}
 
 	for {
 		//loop connect server
